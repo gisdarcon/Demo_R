@@ -1,0 +1,47 @@
+---
+title: "Simple Bar plot - Anti-psychotics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Code
+
+```{r}
+library(curl)
+library(data.table)
+library(ggplot2)
+library(jsonlite)
+
+
+dt <- fread("https://pldr.org/download/epjwe/cfv/p_1_10_2017_Q1_LSOA.csv") 
+
+lsoa_lkp <- fromJSON("https://opendata.arcgis.com/datasets/9f4c270148014f20bf24abff9a7aef62_0.geojson", flatten=TRUE)
+lsoa_lkp <- as.data.frame(lsoa_lkp)
+lsoa_lkp <- lsoa_lkp[,c(7,9,10)]
+colnames(lsoa_lkp) <- c("lsoa11","lad","name")
+
+dt1 <- merge(dt, lsoa_lkp, by="lsoa11", all.x = T)
+dt1 <- dt1[dt1$lad %in% c("E11000001","E11000002","E11000007","E13000002","E06000045")]
+
+graph1 <-dt1[, list(items= sum(items), pop=sum(all_ages)), by= .(lad, name)]
+
+graph1$rate <- (graph1$items/graph1$pop) * 1000
+
+p <- ggplot(data=graph1, aes(x=name, y=rate)) +
+  geom_bar(stat="identity", fill="steelblue")+
+  labs(y="Items per 1000 people", x = "Upper Tier Local Authority")+
+  theme_minimal()
+```
+
+## Plot
+
+Here is our embed plot:
+
+```{r pressure, echo=FALSE}
+plot(p)
+```
+
+
