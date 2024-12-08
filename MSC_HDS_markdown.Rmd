@@ -18,7 +18,7 @@ library(jsonlite)
 # https://pldr.org/dataset/epjwe/
 dt <- fread("https://pldr.org/download/epjwe/cfv/p_1_10_2017_Q1_LSOA.csv") 
 
-setwd("E:/Repos/Demo_R")
+setwd("C:/Repos/Demo_R")
 
 
 # https://geoportal.statistics.gov.uk/search?collection=Dataset&sort=-created&tags=all(LUP_LSOA_UTLA)
