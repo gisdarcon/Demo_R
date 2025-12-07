@@ -1,3 +1,3 @@
-# Demo__R
+# Demo_R
 
 R Example
